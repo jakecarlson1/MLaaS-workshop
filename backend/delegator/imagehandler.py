@@ -47,7 +47,7 @@ class ImageHandler(BaseHandler):
         self.curr_model += 1
         self.curr_runner += 1
         self.curr_runner %= len(self.runners)
-        load_url = self.runners[self.curr_runner] + load_route
+        load_url = self.runners[self.curr_runner] + self.load_route
         result = requests.get(load_url, params={'model_num': self.curr_model})
         self.last_update = time.time()
         raise gen.Return(result.text)
