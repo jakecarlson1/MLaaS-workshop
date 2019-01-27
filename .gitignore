@@ -1,2 +1,9 @@
 # vim swap
 *.swp
+
+# pycache
+__pycache__/
+
+# mongo data
+backend/data/
+

@@ -2,29 +2,29 @@ version: '3.2'
 
 services:
     delegator:
-        build: delegator
+        build: backend/delegator
         ports:
             - "8000:8000"
         volumes:
-            - ./delegator:/app
+            - ./backend/delegator:/app
         links:
             - runner1
             - runner2
             - mongo
     runner1:
-        build: runner
+        build: backend/runner
         ports:
             - "3000"
         volumes:
-            - ./runner:/app
+            - ./backend/runner:/app
         links:
             - mongo
     runner2:
-        build: runner
+        build: backend/runner
         ports:
             - "3000"
         volumes:
-            - ./runner:/app
+            - ./backend/runner:/app
         links:
             - mongo
     mongo:
@@ -33,7 +33,7 @@ services:
         ports:
             - "27017:27017"
         volumes:
-            - ./data:/data
+            - ./backend/data:/data
             - model-data:/data/db
 
 volumes:
