@@ -1,0 +1,41 @@
+version: '3.2'
+
+services:
+    delegator:
+        build: delegator
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./delegator:/app
+        links:
+            - runner1
+            - runner2
+            - mongo
+    runner1:
+        build: runner
+        ports:
+            - "3000"
+        volumes:
+            - ./runner:/app
+        links:
+            - mongo
+    runner2:
+        build: runner
+        ports:
+            - "3000"
+        volumes:
+            - ./runner:/app
+        links:
+            - mongo
+    mongo:
+        image: mongo
+        restart: always
+        ports:
+            - 27017:27017
+        volumes:
+            - ./data:/data
+            - model-data:/data/db
+
+volumes:
+    model-data:
+
