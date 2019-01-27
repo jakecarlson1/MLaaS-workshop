@@ -29,7 +29,7 @@ class ImageHandler(BaseHandler):
     @tornado.web.asynchronous
     @tornado.gen.coroutine
     def post(self):
-        if time.time() - last_update >= model_update_interval:
+        if time.time() - self.last_update >= self.model_update_interval:
             status = yield self._update_model()
         image_info = self.request.files['image'][0]
         status = yield self._delegate_to_runner(image_info)
@@ -49,7 +49,7 @@ class ImageHandler(BaseHandler):
         self.curr_runner %= len(self.runners)
         load_url = self.runners[self.curr_runner] + load_route
         result = requests.get(load_url, params={'model_num': self.curr_model})
-        last_update = time.time()
+        self.last_update = time.time()
         raise gen.Return(result.text)
 
 class ReturnHandler(BaseHandler):
