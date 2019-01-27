@@ -10,8 +10,15 @@ from tornado import gen
 
 from basehandler import BaseHandler
 
+import requests
+
 class ImageHandler(BaseHandler):
     # TODO: timer to periodically update model
+    runners = ['http://runner1:3000/', 'http://runner2:3000/']
+    load_route = 'LoadModel/'
+    transfer_route = 'Transfer/'
+    curr_runner = 0
+    curr_model = 0
 
     @tornado.web.asynchronous
     @tornado.gen.coroutine
@@ -23,7 +30,8 @@ class ImageHandler(BaseHandler):
 
     @tornado.gen.coroutine
     def _delegate_to_runner(self, image):
-        result = "pass"
-        # TODO: send image to runner with newest model
-        raise gen.Return(result)
+        transfer_url = self.runners[self.curr_runner] + self.transfer_route
+        # self.redirect(transfer_url)
+        result = requests.post(transfer_url, files={'image': image['body']})
+        raise gen.Return(result.text)
 

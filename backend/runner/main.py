@@ -13,7 +13,7 @@ from basehandler import BaseHandler
 from transferhandlers import ImageHandler, ModelHandler
 
 # Setup information for tornado class
-define("port", default=8000,
+define("port", default=3000,
        help="run on the given port", type=int)
 
 # Utility to be used when creating the Tornado server
