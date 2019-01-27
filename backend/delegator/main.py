@@ -27,6 +27,7 @@ class Application(tornado.web.Application):
         handlers = [(r"/[/]?",             BaseHandler),
                     (r"/Style[/]?",        ImageHandler),
                     (r"/Return[/]?",       ReturnHandler),
+                    (r"/images/(.*)",      tornado.web.StaticFileHandler, {'path': '/images/'})
                     ]
 
         settings = {'debug':True}
