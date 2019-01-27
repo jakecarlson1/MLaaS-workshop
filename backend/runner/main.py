@@ -1,6 +1,10 @@
 #!/usr/bin/python
 '''Starts and runs the tornado with BaseHandler '''
 
+# database imports
+from pymongo import MongoClient
+from pymongo.errors import ServerSelectionTimeoutError
+
 # tornado imports
 import tornado.web
 from tornado.web import HTTPError
@@ -28,6 +32,14 @@ class Application(tornado.web.Application):
                     (r"/LoadModel[/]?",    ModelHandler),
                     (r"/Transfer[/]?",     ImageHandler),
                     ]
+		try:
+            self.client  = MongoClient('mongodb://mongo:27017/', serverSelectionTimeoutMS=5)
+            print(self.client.server_info())
+            self.db = self.client.models
+
+        except ServerSelectionTimeoutError as inst:
+            print('Could not initialize database connection, skipping')
+            print(inst)
 
         settings = {'debug':True}
         tornado.web.Application.__init__(self, handlers, **settings)
