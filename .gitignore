@@ -7,3 +7,9 @@ __pycache__/
 # mongo data
 backend/data/
 
+# configuration
+frontend/config.dat
+
+# saved images
+frontend/images/*
+!frontend/images/Example_Saved_Image.jpg 
