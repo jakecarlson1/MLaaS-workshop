@@ -7,6 +7,7 @@ from email.mime.image import MIMEImage
 import Text
 import time
 import os
+import BackendQuery
 
 M = None
 idler = None
@@ -55,8 +56,8 @@ def process_inbox():
 
                 # Prepare the Image as a MIMEImage object with a name
                 image = MIMEImage(image_payload)
-                image.add_header('Content-Disposition', "attachment; filename= %s" % image_name)
-                Text.SendText(image, sender)
+                transferred = BackendQuery.style_transfer(image_name, image)
+                Text.SendText(transferred, sender)
                 print("Response Sent for Image: " + image_name)
 
         # Delete the email
