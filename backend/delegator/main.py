@@ -10,7 +10,7 @@ from tornado.options import define, options
 
 # custom imports
 from basehandler import BaseHandler
-from imagehandler import ImageHandler
+from imagehandler import ImageHandler, ReturnHandler
 
 # Setup information for tornado class
 define("port", default=8000,
@@ -26,6 +26,7 @@ class Application(tornado.web.Application):
 
         handlers = [(r"/[/]?",             BaseHandler),
                     (r"/Style[/]?",        ImageHandler),
+                    (r"/Return[/]?",       ReturnHandler),
                     ]
 
         settings = {'debug':True}
