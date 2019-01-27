@@ -13,6 +13,15 @@ M = None
 idler = None
 thread = None
 
+def stylize_and_respond(image_name, image_save_name, sender):
+    try:
+        stylized = BackendQuery.style_transfer(image_name, open(image_save_name, 'rb'))
+        Text.SendImage(stylized, sender)
+        print("Response Sent for Image: " + image_name)
+    except:
+        Text.SendText("An error occurred while trying to stylize your image.", sender)
+    return None
+
 def check():
     try:
         process_inbox()
@@ -51,14 +60,11 @@ def process_inbox():
                 # Save the Image
                 now = datetime.datetime.now().isoformat()
                 image_save_name = image_name.split('.')
-                image_save_name = image_save_name[0] + "__" + now + "." + image_save_name[1]
-                open("images/" + image_save_name, 'wb').write(image_payload)
+                image_save_name = "images/" + image_save_name[0] + "__" + now + "." + image_save_name[1]
+                open(image_save_name, 'wb').write(image_payload)
 
-                # Prepare the Image as a MIMEImage object with a name
-                image = MIMEImage(image_payload)
-                transferred = BackendQuery.style_transfer(image_name, image)
-                Text.SendText(transferred, sender)
-                print("Response Sent for Image: " + image_name)
+                # Query the style transfer service and send back the stylized image
+                stylize_and_respond(image_name, image_save_name, sender)
 
         # Delete the email
         M.store(num, '+FLAGS', '\\Deleted')
