@@ -32,7 +32,7 @@ class Application(tornado.web.Application):
                     (r"/LoadModel[/]?",    ModelHandler),
                     (r"/Transfer[/]?",     ImageHandler),
                     ]
-		try:
+        try:
             self.client  = MongoClient('mongodb://mongo:27017/', serverSelectionTimeoutMS=5)
             print(self.client.server_info())
             self.db = self.client.models

@@ -33,7 +33,7 @@ class ImageHandler(BaseHandler):
         raise gen.Return(result)
 
     @tornado.gen.coroutine
-    def _load_model(self)
+    def _load_model(self):
         models = list(self.db.models.find({}).sort({'_id', -1}))
         # TODO: deserialize with pickle
         self.num_models = len(models)

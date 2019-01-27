@@ -10,7 +10,6 @@ from tornado import gen
 
 from basehandler import BaseHandler
 
-import cv2
 import requests
 import time
 import uuid
@@ -57,8 +56,8 @@ class ReturnHandler(BaseHandler):
     @tornado.web.asynchronous
     @tornado.gen.coroutine
     def post(self):
-        image_info = self.request.files['image'][0]
-        i_name = SERVED_IMAGE_DIR + str(uuid.uuid4()) + ".jpeg"
-        cv2.imwrite(i_name, i * 255)
+        #image_info = self.request.files['image'][0]
+        #i_name = SERVED_IMAGE_DIR + str(uuid.uuid4()) + ".jpeg"
+        i_name = SERVED_IMAGE_DIR + 'temp.png'
         self.write_json({'image': i_name})
 
