@@ -18,6 +18,8 @@ services:
             - "3000"
         volumes:
             - ./backend/runner:/app
+            - ./backend/scripts:/scripts
+            - ./backend/models:/models
         links:
             - mongo
     runner2:
