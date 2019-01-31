@@ -10,13 +10,12 @@ from tornado import gen
 
 from basehandler import BaseHandler
 
-import pickle
+from load_models import load_model
 
 MODEL_NUM = 0
 
 class ImageHandler(BaseHandler):
     model = None
-    num_models = 1
 
     @tornado.web.asynchronous
     @tornado.gen.coroutine
@@ -36,12 +35,8 @@ class ImageHandler(BaseHandler):
 
     @tornado.gen.coroutine
     def _load_model(self):
-        models = list(self.db.models.find({}).sort({'_id', -1}))
-        self.num_models = len(models)
-        print(models)
-        model_str = models[MODEL_NUM % self.num_models]['model_str']
-        self.model = pickle.loads(model_str)
-        raise gen.Return(self.num_models)
+        self.model = load_model(MODEL_NUM)
+        raise gen.Return()
 
 class ModelHandler(BaseHandler):
     @tornado.web.asynchronous

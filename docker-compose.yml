@@ -11,34 +11,18 @@ services:
         links:
             - runner1
             - runner2
-            - mongo
-    runner1:
-        build: backend/runner
-        ports:
-            - "3000"
-        volumes:
-            - ./backend/runner:/app
-            - ./backend/scripts:/scripts
-            - ./backend/models:/models
-        links:
-            - mongo
     runner2:
         build: backend/runner
         ports:
             - "3000"
         volumes:
             - ./backend/runner:/app
-        links:
-            - mongo
-    mongo:
-        image: mongo
-        restart: always
+            - ./backend/models:/models
+    runner2:
+        build: backend/runner
         ports:
-            - "27017:27017"
+            - "3000"
         volumes:
-            - ./backend/data:/data
-            - model-data:/data/db
-
-volumes:
-    model-data:
+            - ./backend/runner:/app
+            - ./backend/models:/models
 
