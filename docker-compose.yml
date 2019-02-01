@@ -11,7 +11,7 @@ services:
         links:
             - runner1
             - runner2
-    runner2:
+    runner1:
         build: backend/runner
         ports:
             - "3000"
