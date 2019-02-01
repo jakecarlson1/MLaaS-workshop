@@ -1,10 +1,18 @@
 version: '3.2'
 
 services:
+    frontend:
+        build: frontend
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./frontend:/app
+        links:
+            - delegator
     delegator:
         build: backend/delegator
         ports:
-            - "8000:8000"
+            - "8000"
         volumes:
             - ./backend/delegator:/app
             - ./backend/images:/images
