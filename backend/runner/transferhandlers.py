@@ -8,42 +8,54 @@ from tornado.ioloop import IOLoop
 from tornado.options import define, options
 from tornado import gen
 
+from scipy.misc import imsave
+
+from PIL import Image
+
 from basehandler import BaseHandler
+
+from load_models import load_model
+
+import uuid
+
+import numpy as np
 
 MODEL_NUM = 0
 
 class ImageHandler(BaseHandler):
     model = None
-    num_models = 1
 
     @tornado.web.asynchronous
     @tornado.gen.coroutine
     def post(self):
-        if model == None:
+        if self.model == None:
             yield self._load_model()
         image_info = self.request.files['image'][0]
-        status = yield self._transform_with_model(image_info)
+        status = yield self._transform_with_model(image_info['body'])
         print(status)
         self.write(status)
 
     @tornado.gen.coroutine
-    def _transform_with_model(self, image):
-        result = "pass"
-        # TODO: eval with model
-        raise gen.Return(result)
+    def _transform_with_model(self, image_body):
+        # image = np.fromstring(image_body, dtype=np.uint8)
+        # image = image.reshape(720,720,4)
+        image = Image.frombytes('RGB', (720,720), image_body)
+        data = image.getdata()
+        print(len(list(data)))
+        pred = self.model.predict([image])[0]
+        image_path = "/images/" + str(uuid.uuid4()) + ".jpeg"
+        imsave(image_path, pred)
+        raise gen.Return(image_path)
 
     @tornado.gen.coroutine
     def _load_model(self):
-        models = list(self.db.models.find({}).sort({'_id', -1}))
-        # TODO: deserialize with pickle
-        self.num_models = len(models)
-        model = models[MODEL_NUM % self.num_models]['model']
-        raise gen.Return(self.num_models)
+        self.model = load_model(MODEL_NUM)
+        raise gen.Return()
 
 class ModelHandler(BaseHandler):
     @tornado.web.asynchronous
     @tornado.gen.coroutine
     def get(self):
-        MODEL_NUM = self.get_int_arg('model_num', MODEL_NUM)
-        self.write(MODEL_NUM)
+        MODEL_NUM = self.get_int_arg('model_num', 0)
+        self.write(str(MODEL_NUM))
 
