@@ -1,16 +1,19 @@
-from keras.models import load_model, Model
+from keras.models import Model
 from keras.layers import Input
 
 from transform import TransformNet
 
 import keras_contrib
 import os
+import random
 
 MODELS_DIR = '/models/'
 
 def load_model(n):
     models = [MODELS_DIR + m for m in os.listdir(MODELS_DIR)]
-    m = models[n % len(models)]
+    model_n = random.randint(0, 100) % len(models)
+    m = models[model_n]
+    print(m)
 
     # load model with keras
     inputs = Input(shape=(720, 720, 3))

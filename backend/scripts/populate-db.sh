@@ -1,1 +1,1 @@
-docker-compose run runner1 python /app/load-models.py
+docker-compose run runner1 python /app/load_models.py
