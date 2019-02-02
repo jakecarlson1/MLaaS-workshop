@@ -7,5 +7,5 @@ RUN pip install -r /requirements.txt
 RUN pip install https://github.com/better/alpine-tensorflow/releases/download/alpine3.7-tensorflow1.7.0/tensorflow-1.7.0-cp36-cp36m-linux_x86_64.whl
 RUN pip install git+https://www.github.com/keras-team/keras-contrib.git
 WORKDIR /app
-CMD ["python", "main.py"]
+CMD ["python", "-u", "main.py"]
 
