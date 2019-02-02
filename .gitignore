@@ -12,4 +12,6 @@ frontend/config.dat
 
 # saved images
 frontend/images/*
-!frontend/images/Example_Saved_Image.jpg 
+backend/images/*
+!frontend/images/Example_Saved_Image.jpg
+!backend/images/temp.jpeg

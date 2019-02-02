@@ -1,15 +1,12 @@
 import requests
-import ast
 from urllib.request import urlopen
 from email.mime.image import MIMEImage
 
 def style_transfer(image_name, image):
     # Make a post request to the stylizing service
     r = requests.post("http://delegator:8000/Style", files = {'image': image})
-    print("Got a response for image named " + image_name + ": " + str(r))
-
     # Parse out the relative path on the endpoint where the stylized image is stored
-    path = ast.literal_eval(str(r.content)[2:-1])["image"]
+    path = str(r.content)[2:-1]
 
     # Load the stylized image
     style_transfer_image_bytes = urlopen("http://delegator:8000" + path).read()

@@ -8,6 +8,8 @@ import Text
 import time
 import os
 import BackendQuery
+from PIL import Image
+import numpy as np
 
 M = None
 idler = None
@@ -15,7 +17,9 @@ thread = None
 
 def stylize_and_respond(image_name, image_save_name, sender):
     try:
-        stylized = BackendQuery.style_transfer(image_name, open(image_save_name, 'rb'))
+        image = Image.open(image_save_name).resize((720, 720), resample=Image.BICUBIC)
+        image_arr = np.array(image).astype(np.float32)[:,:,:3]
+        stylized = BackendQuery.style_transfer(image_name, image_arr.tostring())
         Text.SendImage(stylized, sender)
         print("Response Sent for Image: " + image_name)
     except:

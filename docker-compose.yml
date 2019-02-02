@@ -26,6 +26,7 @@ services:
         volumes:
             - ./backend/runner:/app
             - ./backend/models:/models
+            - ./backend/images:/images
     runner2:
         build: backend/runner
         ports:
@@ -33,4 +34,4 @@ services:
         volumes:
             - ./backend/runner:/app
             - ./backend/models:/models
-
+            - ./backend/images:/images

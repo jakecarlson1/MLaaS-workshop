@@ -8,6 +8,8 @@ from tornado.ioloop import IOLoop
 from tornado.options import define, options
 from tornado import gen
 
+from email.mime.image import MIMEImage
+
 from scipy.misc import imsave
 
 from PIL import Image
@@ -37,12 +39,9 @@ class ImageHandler(BaseHandler):
 
     @tornado.gen.coroutine
     def _transform_with_model(self, image_body):
-        # image = np.fromstring(image_body, dtype=np.uint8)
-        # image = image.reshape(720,720,4)
-        image = Image.frombytes('RGB', (720,720), image_body)
-        data = image.getdata()
-        print(len(list(data)))
-        pred = self.model.predict([image])[0]
+        image = np.fromstring(image_body, dtype=np.float32).reshape((1,720,720,3))
+        print(image.shape)
+        pred = self.model.predict(image)[0]
         image_path = "/images/" + str(uuid.uuid4()) + ".jpeg"
         imsave(image_path, pred)
         raise gen.Return(image_path)
@@ -58,4 +57,3 @@ class ModelHandler(BaseHandler):
     def get(self):
         MODEL_NUM = self.get_int_arg('model_num', 0)
         self.write(str(MODEL_NUM))
-
